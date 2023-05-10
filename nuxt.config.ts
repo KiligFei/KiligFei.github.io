@@ -1,4 +1,12 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.ts
 export default defineNuxtConfig({
-
+  modules: [
+    '@unocss/nuxt',
+    ['unplugin-icons/nuxt', { /* options */ }],
+  ],
+  app: {
+    head: {
+      title: 'Kilig Fei',
+    },
+  },
 })

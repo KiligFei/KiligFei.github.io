@@ -1,5 +1,10 @@
+<script setup lang="ts">
+const route = useRoute()
+</script>
+
 <template>
-  <div>
-    <NuxtWelcome />
-  </div>
+  <NavBar />
+  <main class="px-7 py-10 of-x-hidden">
+    <Footer />
+  </main>
 </template>

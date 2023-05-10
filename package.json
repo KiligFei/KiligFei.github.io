@@ -9,7 +9,15 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.38.6",
+    "@iconify/json": "^2.2.62",
     "@types/node": "^18",
-    "nuxt": "^3.4.3"
+    "@unocss/nuxt": "^0.51.12",
+    "eslint": "^8.40.0",
+    "nuxt": "^3.4.3",
+    "unplugin-icons": "^0.16.1"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.1.2"
   }
 }
