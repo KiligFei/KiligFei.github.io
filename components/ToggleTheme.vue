@@ -4,6 +4,6 @@ import { toggleDark } from '~/logics'
 
 <template>
   <a select-none title="Toggle Color Scheme" @click="toggleDark">
-    <div class="i-ri-sun-line" >主题切换</div>
+    <div class="i-ri-sun-line" ></div>
   </a>
 </template>

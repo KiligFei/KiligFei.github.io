@@ -19,31 +19,8 @@ import { isDark } from '~/logics'
           <span class="lt-md:hidden">Blog</span>
           <div i-ri-article-line md:hidden />
         </RouterLink>
-        <RouterLink to="/projects" title="Projects">
-          <span class="lt-md:hidden">Projects</span>
-          <div i-ri-lightbulb-line class="md:hidden" />
-        </RouterLink>
-        <RouterLink to="/talks" class="lt-md:hidden" title="Talks">
-          Talks
-        </RouterLink>
-        <RouterLink to="/podcasts" class="lt-md:hidden" title="Podcasts">
-          Podcasts
-        </RouterLink>
-        <RouterLink to="/demos" title="Demos">
-          <span class="lt-md:hidden">Demos</span>
-          <div i-ri-screenshot-line class="md:hidden" />
-        </RouterLink>
-        <RouterLink to="/sponsors-list" title="Sponsors">
-          <div i-ri-heart-line />
-        </RouterLink>
-        <a href="https://twitter.com/antfu7" target="_blank" title="Twitter" class="lt-md:hidden">
-          <!-- <feather-twitter /> -->
-        </a>
-        <a href="https://github.com/antfu" target="_blank" title="GitHub" class="lt-md:hidden">
+        <a href="https://github.com/KiligFei" target="_blank" title="GitHub">
           <div i-uil-github-alt />
-        </a>
-        <a href="/feed.xml" target="_blank" title="RSS" class="lt-md:hidden">
-          <div i-la-rss-square style="font-size:1.25rem; margin: 0 -0.125rem;" />
         </a>
         <toggle-theme />
       </div>
