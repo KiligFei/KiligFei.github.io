@@ -37,7 +37,7 @@ import { isDark } from '~/logics'
           <div i-ri-heart-line />
         </RouterLink>
         <a href="https://twitter.com/antfu7" target="_blank" title="Twitter" class="lt-md:hidden">
-          <feather-twitter />
+          <!-- <feather-twitter /> -->
         </a>
         <a href="https://github.com/antfu" target="_blank" title="GitHub" class="lt-md:hidden">
           <div i-uil-github-alt />

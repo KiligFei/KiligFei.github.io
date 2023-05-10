@@ -3,6 +3,7 @@ import { useDark } from '@vueuse/core'
 export const isDark = useDark()
 export function toggleDark(event: MouseEvent) {
   // @ts-expect-error experimental API
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const isAppearanceTransition = document.startViewTransition
     && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -18,10 +19,12 @@ export function toggleDark(event: MouseEvent) {
     Math.max(y, innerHeight - y),
   )
   // @ts-expect-error: Transition API
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const transition = document.startViewTransition(async () => {
     isDark.value = !isDark.value
     await nextTick()
   })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   transition.ready
     .then(() => {
       const clipPath = [
