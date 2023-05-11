@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useContent, useContentHead, useRequestEvent } from '#imports'
 
-const { page, layout  } = useContent()
+const { page, layout } = useContent()
+const title = page.value.title
 
 // Page not found, set correct status code on SSR
 if (!(page as any).value && process.server) {
@@ -14,6 +15,9 @@ useContentHead(page)
 
 <template>
   <div class="prose m-auto slide-enter-content">
+    <h1 class="mb-0 slide-enter" v-if="title">
+      {{ title }}
+    </h1>
     <NuxtLayout :name="layout as string || 'default'">
       <ContentRenderer v-if="page" :key="(page as any)._id" :value="page">
         <template #empty="{ value }">
