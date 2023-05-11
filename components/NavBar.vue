@@ -4,11 +4,7 @@ import { isDark } from '~/logics'
 
 <template>
   <header class="header z-40">
-    <RouterLink
-      class="w-10 h-10 absolute lg:fixed m-6 select-none outline-none"
-      to="/"
-      focusable="false"
-    >
+    <RouterLink class="w-10 h-10 absolute lg:fixed m-6 select-none outline-none" to="/" focusable="false">
       <img v-show="isDark" src="logo-dark.svg?url" alt="logo">
       <img v-show="!isDark" src="logo.svg?url" alt="logo">
     </RouterLink>
@@ -19,7 +15,7 @@ import { isDark } from '~/logics'
           <span class="lt-md:hidden">Blog</span>
           <div i-ri-article-line md:hidden />
         </RouterLink>
-        <a href="https://github.com/KiligFei" target="_blank" title="GitHub">
+        <a href="https://github.com/KiligFei" target="_black" title="GitHub">
           <div i-uil-github-alt />
         </a>
         <toggle-theme />
@@ -47,7 +43,7 @@ import { isDark } from '~/logics'
   box-sizing: border-box;
 }
 
-.nav > * {
+.nav>* {
   margin: auto;
 }
 
@@ -75,7 +71,7 @@ import { isDark } from '~/logics'
   grid-auto-flow: column;
 }
 
-.nav .right > * {
+.nav .right>* {
   margin: auto;
 }
 </style>
