@@ -1,0 +1,6 @@
+<template>
+  <Plum />
+  <slot />
+</template>
+
+

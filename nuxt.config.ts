@@ -2,10 +2,9 @@
 export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
+    '@nuxt/content'
   ],
-  app: {
-    head: {
-      title: 'Kilig Fei',
-    },
+  content: {
+    documentDriven: true
   },
 })
