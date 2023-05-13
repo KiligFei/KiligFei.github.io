@@ -2,9 +2,9 @@
 export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
-    '@nuxt/content'
+    '@nuxt/content',
   ],
   content: {
-    documentDriven: true
+    documentDriven: true,
   },
 })

@@ -13,4 +13,3 @@ import '@unocss/reset/tailwind.css'
     </main>
   </div>
 </template>
-

@@ -15,7 +15,7 @@ useContentHead(page)
 
 <template>
   <div class="prose m-auto slide-enter-content">
-    <h1 class="mb-0 slide-enter" v-if="title">
+    <h1 v-if="title" class="mb-0 slide-enter">
       {{ title }}
     </h1>
     <NuxtLayout :name="layout as string || 'default'">
@@ -28,5 +28,3 @@ useContentHead(page)
     </NuxtLayout>
   </div>
 </template>
-
-

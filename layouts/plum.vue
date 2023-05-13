@@ -2,5 +2,3 @@
   <Plum />
   <slot />
 </template>
-
-
