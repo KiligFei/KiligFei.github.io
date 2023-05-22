@@ -5,8 +5,8 @@ import { isDark } from '~/logics'
 <template>
   <header class="header z-40">
     <RouterLink class="w-10 h-10 absolute lg:fixed m-6 select-none outline-none" to="/" focusable="false">
-      <img v-show="isDark" src="logo-dark.svg?url" alt="logo">
-      <img v-show="!isDark" src="logo.svg?url" alt="logo">
+      <img v-show="isDark" src="logo-dark.svg?url" alt="logo" style="max-width: 100px;">
+      <img v-show="!isDark" src="logo.svg?url" alt="logo" style="max-width: 100px;">
     </RouterLink>
     <nav class="nav">
       <div class="spacer" />
