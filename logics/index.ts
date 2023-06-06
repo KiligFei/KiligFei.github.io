@@ -1,6 +1,12 @@
 import { useDark } from '@vueuse/core'
 
 export const isDark = useDark()
+/**
+ * Toggles the dark mode theme by changing the value of `isDark`.
+ *
+ * @param {MouseEvent} event - The event that triggered the function call.
+ * @return {void} This function does not return anything.
+*/
 export function toggleDark(event: MouseEvent) {
   // @ts-expect-error experimental API
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
