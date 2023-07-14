@@ -1,16 +1,18 @@
 <script setup lang="ts">
+const articles: any = ref([])
 async function getData() {
-  const articles = await queryContent('posts').find()
-  console.log('🚀 ~ file: ListPosts.vue:6 ~ articles:', articles)
+  articles.value = await queryContent('posts').find()
+  articles.value.shift()
 }
 getData()
+const router = useRouter()
+function gotoBlog(blog: { _path: string }) {
+  router.push(blog._path)
+}
 </script>
 
 <template>
-  <div>
-    hjfahjh
+  <div v-for="item in articles" :key="item.title" cursor-pointer @click="gotoBlog(item)">
+    {{ item.title }}
   </div>
 </template>
-
-<style scoped lang="less">
-</style>
