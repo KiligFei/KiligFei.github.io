@@ -13,6 +13,7 @@ function gotoBlog(blog: { _path: string }) {
 
 <template>
   <div v-for="item in articles" :key="item.title" cursor-pointer @click="gotoBlog(item)">
-    {{ item.title }}
+    <div>{{ item.title }}</div>
+    <div>{{ item.description }}</div>
   </div>
 </template>
