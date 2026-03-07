@@ -3,7 +3,7 @@ title: My First Post
 slug: my-first-post
 date: 2022-01-01
 layout: default
-describe: describe
+description: CSS background fundamentals, gradients, and the techniques used most often in everyday interfaces.
 ---
 
 

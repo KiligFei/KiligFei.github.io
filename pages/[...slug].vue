@@ -2,7 +2,21 @@
 import { useContent, useContentHead, useRequestEvent } from '#imports'
 
 const { page, layout } = useContent()
-const title = page.value.title
+const title = computed(() => page.value?.title || '')
+const description = computed(() => page.value?.description || (page.value as any)?.describe || '')
+const isLandingPage = computed(() => ['/', '/posts'].includes(page.value?._path || ''))
+const articleDate = computed(() => {
+  const date = (page.value as any)?.date
+
+  if (!date)
+    return ''
+
+  return new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(date))
+})
 
 // Page not found, set correct status code on SSR
 if (!(page as any).value && process.server) {
@@ -14,17 +28,53 @@ useContentHead(page)
 </script>
 
 <template>
-  <div class="prose m-auto slide-enter-content">
-    <h1 v-if="title" class="mb-0 slide-enter">
-      {{ title }}
-    </h1>
-    <NuxtLayout :name="layout as string || 'default'">
-      <ContentRenderer v-if="page" :key="(page as any)._id" :value="page">
-        <template #empty="{ value }">
-          <DocumentDrivenEmpty :value="value" />
-        </template>
-      </ContentRenderer>
-      <DocumentDrivenNotFound v-else />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout :name="layout as string || 'default'">
+    <template v-if="page">
+      <div v-if="isLandingPage">
+        <ContentRenderer :key="(page as any)._id" :value="page">
+          <template #empty="{ value }">
+            <DocumentDrivenEmpty :value="value" />
+          </template>
+        </ContentRenderer>
+      </div>
+
+      <article v-else class="article-shell slide-enter-shift">
+        <header class="article-header">
+          <div class="space-y-5">
+            <p class="eyebrow">journal entry</p>
+
+            <div class="space-y-4">
+              <h1 class="font-display text-4xl leading-none tracking-[-0.08em] text-[var(--c-text)] text-balance sm:text-6xl">
+                {{ title }}
+              </h1>
+              <p v-if="description" class="max-w-[56ch] text-lg leading-8 text-[var(--c-text-soft)] text-balance">
+                {{ description }}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-[var(--c-text-faint)]">
+              <span v-if="articleDate">{{ articleDate }}</span>
+              <NuxtLink
+                to="/posts"
+                class="inline-flex items-center gap-2 transition hover:text-[var(--c-text)]"
+              >
+                <span class="i-ph-arrow-left text-base" />
+                <span>Back to journal</span>
+              </NuxtLink>
+            </div>
+          </div>
+        </header>
+
+        <div class="article-prose prose m-auto max-w-none">
+          <ContentRenderer :key="(page as any)._id" :value="page">
+            <template #empty="{ value }">
+              <DocumentDrivenEmpty :value="value" />
+            </template>
+          </ContentRenderer>
+        </div>
+      </article>
+    </template>
+
+    <DocumentDrivenNotFound v-else />
+  </NuxtLayout>
 </template>

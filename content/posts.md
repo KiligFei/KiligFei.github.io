@@ -1,15 +1,8 @@
 ---
 title: 'Blog'
-description: 'meta description of the page'
+description: 'Frontend notes, CSS experiments, and details worth keeping.'
 layout: plum
 ---
 
-<!-- Content of the page -->
-<br />
-<br />
-<br />
-<br />
-
-::listPosts
+::PostsLanding
 ::
-
