@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main] # 当你推送到 main 分支时触发
+    branches: [main]
 
 permissions:
   contents: read
@@ -16,22 +16,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 1. 必须先安装 pnpm，然后再运行 setup-node
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8 # 或者 9，取决于你本地的版本
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
+          cache: pnpm # 现在可以安全地使用 pnpm 缓存了
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Static Site Generation
-        run: npx nuxt generate # Nuxt 专门用于生成静态文件的命令
+        run: pnpm run generate # 确保 package.json 里有 "generate": "nuxt generate"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .output/public # Nuxt 生成的静态文件默认在此目录
+          path: .output/public
 
   deploy:
     needs: build_site
