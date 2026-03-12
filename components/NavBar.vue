@@ -20,8 +20,9 @@ function isActive(path: string) {
         <NuxtLink
           to="/"
           class="group flex min-w-0 items-center gap-3 rounded-full p-1 text-[var(--c-text)] transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1px]"
+          title="Home base. The journal is the playground."
         >
-          <span class="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--c-border)] bg-[var(--c-surface-muted)] text-sm font-semibold tracking-[0.2em] text-[var(--c-text)]">
+          <span class="brand-mark flex h-11 w-11 items-center justify-center rounded-full border border-[var(--c-border)] bg-[var(--c-surface-muted)] text-sm font-semibold tracking-[0.2em] text-[var(--c-text)]">
             KF
           </span>
           <span class="min-w-0">
@@ -38,6 +39,7 @@ function isActive(path: string) {
               :to="item.to"
               class="nav-link rounded-full px-4 py-2 text-sm font-medium text-[var(--c-text-soft)] transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-[var(--c-text)] active:translate-y-[1px]"
               :class="isActive(item.to) ? 'bg-[var(--c-accent)] text-[var(--c-accent-contrast)] shadow-[var(--shadow-soft)]' : ''"
+              :aria-current="isActive(item.to) ? 'page' : undefined"
             >
               {{ item.label }}
             </NuxtLink>

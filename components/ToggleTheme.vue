@@ -24,7 +24,7 @@ const { mode, setMode } = useThemePreferences()
       @click="setMode(item.id)"
     >
       <span
-        class="text-base transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        class="theme-mode-icon text-base transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
         :class="[item.icon, mode === item.id ? 'scale-100 opacity-100' : 'scale-90 opacity-70']"
       />
       <span class="hidden md:inline">{{ item.label }}</span>

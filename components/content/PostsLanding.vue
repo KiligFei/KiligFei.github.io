@@ -1,7 +1,10 @@
 <script setup lang="ts">
-const { data } = useAsyncData('posts-landing-summary', () => queryContent('posts').find())
+const { data, error, refresh } = useAsyncData('posts-landing-summary', () => queryContent('posts').find())
 
 const count = computed(() => {
+  if (error.value)
+    return null
+
   return (data.value || []).filter((item: any) => item._path !== '/posts').length
 })
 </script>
@@ -20,13 +23,32 @@ const count = computed(() => {
       </div>
 
       <aside class="surface-panel rounded-[2rem] p-6 sm:p-7">
-        <p class="eyebrow">Archive</p>
-        <p class="mt-4 font-display text-5xl leading-none tracking-[-0.08em] text-[var(--c-text)]">
-          {{ count }}
-        </p>
-        <p class="mt-3 text-sm leading-6 text-[var(--c-text-soft)]">
-          published {{ count === 1 ? 'note' : 'notes' }} and counting.
-        </p>
+        <template v-if="error">
+          <p class="eyebrow">Archive</p>
+          <p class="mt-4 font-display text-2xl leading-tight tracking-[-0.05em] text-[var(--c-text)]">
+            Archive count is catching up.
+          </p>
+          <p class="mt-3 text-sm leading-6 text-[var(--c-text-soft)]">
+            The summary is taking a moment to load.
+          </p>
+          <button
+            type="button"
+            class="button-secondary mt-4"
+            @click="refresh"
+          >
+            Try again
+          </button>
+        </template>
+
+        <template v-else>
+          <p class="eyebrow">Archive</p>
+          <p class="mt-4 font-display text-5xl leading-none tracking-[-0.08em] text-[var(--c-text)]">
+            {{ count ?? '—' }}
+          </p>
+          <p class="mt-3 text-sm leading-6 text-[var(--c-text-soft)]">
+            published {{ count === 1 ? 'note' : 'notes' }} and counting.
+          </p>
+        </template>
       </aside>
     </div>
 

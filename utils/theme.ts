@@ -1,14 +1,14 @@
 export type ThemeMode = 'light' | 'dark'
 export type ThemePalette = 'clay' | 'sage' | 'ocean'
 
-export type ThemePaletteOption = {
+export interface ThemePaletteOption {
   id: ThemePalette
   label: string
   description: string
   swatch: string
 }
 
-export type ThemeModeOption = {
+export interface ThemeModeOption {
   id: ThemeMode
   label: string
   icon: string

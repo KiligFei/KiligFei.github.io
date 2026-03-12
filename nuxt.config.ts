@@ -5,6 +5,10 @@ export default defineNuxtConfig({
   nitro: {
     static: true,
   },
+  sourcemap: {
+    server: false,
+    client: false,
+  },
   modules: [
     '@unocss/nuxt',
     '@nuxt/content',

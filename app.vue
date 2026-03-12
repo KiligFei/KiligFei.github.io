@@ -10,6 +10,11 @@ import '@fontsource/ibm-plex-mono/latin-500.css'
 import 'assets/main.css'
 import 'uno.css'
 import '@unocss/reset/tailwind.css'
+
+onMounted(() => {
+  // Tiny easter egg for curious devs.
+  console.info('Nice to see you here. /posts is the playground.')
+})
 </script>
 
 <template>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { data, status } = useAsyncData('posts-list', () => queryContent('posts').find())
+import { formatDateShort } from '~/utils/dates'
+
+const { data, pending, error, refresh } = useAsyncData('posts-list', () => queryContent('posts').find())
 
 const articles = computed(() => {
   const items = (data.value || [])
@@ -9,21 +11,33 @@ const articles = computed(() => {
   return items
 })
 
-function formatDate(date?: string) {
-  if (!date)
-    return 'Undated'
-
-  return new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(date))
-}
+const errorMessage = computed(() => error.value?.message || 'Unable to load the journal right now.')
 </script>
 
 <template>
   <div class="space-y-4">
-    <template v-if="status === 'pending' && !articles.length">
+    <template v-if="error && !articles.length">
+      <div class="surface-panel rounded-[1.8rem] p-6 text-center sm:p-7">
+        <p class="font-display text-2xl tracking-[-0.05em] text-[var(--c-text)]">
+          The journal is taking a short breather.
+        </p>
+        <p class="mt-3 text-[var(--c-text-soft)]">
+          {{ errorMessage }} Give it another try in a moment.
+        </p>
+        <button
+          type="button"
+          class="button-secondary mt-5"
+          @click="refresh"
+        >
+          Try again
+        </button>
+      </div>
+    </template>
+
+    <template v-else-if="pending && !articles.length">
+      <p class="font-mono text-xs uppercase tracking-[0.18em] text-[var(--c-text-faint)]">
+        Indexing the notes...
+      </p>
       <div
         v-for="index in 3"
         :key="index"
@@ -37,6 +51,21 @@ function formatDate(date?: string) {
     </template>
 
     <template v-else-if="articles.length">
+      <div
+        v-if="error"
+        class="surface-panel rounded-[1.8rem] border border-[var(--c-border-strong)] p-5 text-sm text-[var(--c-text-soft)]"
+      >
+        <span>Some entries did not refresh in time.</span>
+        <button
+          type="button"
+          class="ml-3 inline-flex items-center gap-2 text-[var(--c-text)] transition hover:text-[var(--c-accent)]"
+          @click="refresh"
+        >
+          <span>Retry</span>
+          <span class="i-ph-arrow-clockwise text-base" />
+        </button>
+      </div>
+
       <article
         v-for="(item, index) in articles"
         :key="item._path"
@@ -49,7 +78,7 @@ function formatDate(date?: string) {
           <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-3xl space-y-4">
               <div class="flex flex-wrap items-center gap-3">
-                <p class="eyebrow">{{ formatDate(item.date) }}</p>
+                <p class="eyebrow">{{ formatDateShort(item.date) }}</p>
                 <span class="inline-flex items-center rounded-full border border-[var(--c-border)] bg-[var(--c-surface-muted)] px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[var(--c-text-faint)]">
                   article {{ String(index + 1).padStart(2, '0') }}
                 </span>
@@ -57,7 +86,7 @@ function formatDate(date?: string) {
 
               <div class="space-y-2">
                 <h2 class="font-display text-2xl leading-[1.02] tracking-[-0.06em] text-[var(--c-text)] text-balance sm:text-3xl">
-                  {{ item.title }}
+                  {{ item.title || 'Untitled note' }}
                 </h2>
                 <p class="max-w-[62ch] text-base leading-7 text-[var(--c-text-soft)]">
                   {{ item.description || 'A note from the journal.' }}
@@ -67,7 +96,7 @@ function formatDate(date?: string) {
 
             <div class="flex items-center gap-3 text-sm text-[var(--c-text-faint)] transition duration-300 group-hover:text-[var(--c-text)]">
               <span>Open note</span>
-              <span class="i-ph-arrow-up-right text-base" />
+              <span class="arrow-icon arrow-up-right i-ph-arrow-up-right text-base" />
             </div>
           </div>
         </NuxtLink>
@@ -79,10 +108,10 @@ function formatDate(date?: string) {
       class="surface-panel rounded-[1.8rem] p-8 text-center"
     >
       <p class="font-display text-2xl tracking-[-0.05em] text-[var(--c-text)]">
-        No notes published yet.
+        No notes yet.
       </p>
       <p class="mt-3 text-[var(--c-text-soft)]">
-        The journal is empty for now. New entries will appear here once they are written.
+        The next entry is still in draft. Check back soon.
       </p>
     </div>
   </div>

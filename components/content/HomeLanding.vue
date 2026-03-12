@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { data } = useAsyncData('home-latest-post', () => queryContent('posts').find())
+import { formatDateShort } from '~/utils/dates'
+
+const { data, pending, error, refresh } = useAsyncData('home-latest-post', () => queryContent('posts').find())
 
 const latestPost = computed(() => {
   const items = (data.value || [])
@@ -24,16 +26,7 @@ const principles = [
   },
 ]
 
-function formatDate(date?: string) {
-  if (!date)
-    return 'Undated'
-
-  return new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(date))
-}
+const errorMessage = computed(() => error.value?.message || 'The latest note could not be loaded.')
 </script>
 
 <template>
@@ -55,18 +48,18 @@ function formatDate(date?: string) {
         </div>
 
         <div class="flex flex-wrap gap-3">
-          <NuxtLink to="/posts" class="button-primary">
+          <NuxtLink to="/posts" class="button-primary group">
             <span>Read the journal</span>
-            <span class="i-ph-arrow-right text-base" />
+            <span class="arrow-icon arrow-right i-ph-arrow-right text-base" />
           </NuxtLink>
           <a
             href="https://github.com/KiligFei"
             target="_blank"
             rel="noreferrer"
-            class="button-secondary"
+            class="button-secondary group"
           >
             <span>View GitHub</span>
-            <span class="i-ph-arrow-up-right text-base" />
+            <span class="arrow-icon arrow-up-right i-ph-arrow-up-right text-base" />
           </a>
         </div>
 
@@ -128,25 +121,73 @@ function formatDate(date?: string) {
           </p>
         </article>
 
+        <template v-if="pending">
+          <div class="surface-panel rounded-[2rem] p-6 md:col-span-2 sm:p-7">
+            <p class="eyebrow">Latest note</p>
+            <p class="mt-3 text-sm text-[var(--c-text-faint)]">
+              Compiling the latest note...
+            </p>
+            <div class="skeleton mt-5 space-y-3">
+              <div class="h-3 w-24 rounded-full bg-[var(--c-border)]" />
+              <div class="h-8 w-4/5 rounded-full bg-[var(--c-border)]" />
+              <div class="h-3 w-3/4 rounded-full bg-[var(--c-border)]" />
+            </div>
+          </div>
+        </template>
+
+        <template v-else-if="error">
+          <div class="surface-panel rounded-[2rem] p-6 md:col-span-2 sm:p-7">
+            <p class="eyebrow">Latest note</p>
+            <p class="mt-4 font-display text-2xl tracking-[-0.05em] text-[var(--c-text)]">
+              Latest note is taking a short detour.
+            </p>
+            <p class="mt-3 text-[var(--c-text-soft)]">
+              {{ errorMessage }} You can still browse the full journal.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <button
+                type="button"
+                class="button-secondary"
+                @click="refresh"
+              >
+                Try again
+              </button>
+              <NuxtLink to="/posts" class="button-primary">
+                Browse the journal
+              </NuxtLink>
+            </div>
+          </div>
+        </template>
+
         <NuxtLink
-          v-if="latestPost"
+          v-else-if="latestPost"
           :to="latestPost._path"
-          class="surface-panel article-link block rounded-[2rem] p-6 transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[2px] hover:border-[var(--c-border-strong)] hover:bg-[var(--c-surface-strong)] active:translate-y-[1px] md:col-span-2 sm:p-7"
+          class="surface-panel article-link group block rounded-[2rem] p-6 transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[2px] hover:border-[var(--c-border-strong)] hover:bg-[var(--c-surface-strong)] active:translate-y-[1px] md:col-span-2 sm:p-7"
         >
           <div class="flex items-center justify-between gap-4">
             <p class="eyebrow">Latest note</p>
             <span class="inline-flex items-center gap-2 text-sm text-[var(--c-text-faint)]">
-              <span>{{ formatDate(latestPost.date) }}</span>
-              <span class="i-ph-arrow-up-right text-base" />
+              <span>{{ formatDateShort(latestPost.date) }}</span>
+              <span class="arrow-icon arrow-up-right i-ph-arrow-up-right text-base" />
             </span>
           </div>
           <h2 class="mt-5 font-display text-3xl leading-[1.02] tracking-[-0.06em] text-[var(--c-text)] text-balance">
-            {{ latestPost.title }}
+            {{ latestPost.title || 'Untitled note' }}
           </h2>
           <p class="mt-3 max-w-[48ch] text-base leading-7 text-[var(--c-text-soft)]">
             {{ latestPost.description || 'A note from the journal.' }}
           </p>
         </NuxtLink>
+
+        <div v-else class="surface-panel rounded-[2rem] p-6 md:col-span-2 sm:p-7">
+          <p class="eyebrow">Latest note</p>
+          <p class="mt-4 font-display text-2xl tracking-[-0.05em] text-[var(--c-text)]">
+            No notes yet.
+          </p>
+          <p class="mt-3 text-[var(--c-text-soft)]">
+            The first entry is still in draft.
+          </p>
+        </div>
       </div>
     </div>
 

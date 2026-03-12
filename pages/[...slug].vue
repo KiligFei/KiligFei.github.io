@@ -1,22 +1,12 @@
 <script setup lang="ts">
 import { useContent, useContentHead, useRequestEvent } from '#imports'
+import { formatDateLong } from '~/utils/dates'
 
 const { page, layout } = useContent()
-const title = computed(() => page.value?.title || '')
+const title = computed(() => page.value?.title || 'Untitled note')
 const description = computed(() => page.value?.description || (page.value as any)?.describe || '')
 const isLandingPage = computed(() => ['/', '/posts'].includes(page.value?._path || ''))
-const articleDate = computed(() => {
-  const date = (page.value as any)?.date
-
-  if (!date)
-    return ''
-
-  return new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(date))
-})
+const articleDate = computed(() => formatDateLong((page.value as any)?.date))
 
 // Page not found, set correct status code on SSR
 if (!(page as any).value && process.server) {
@@ -56,9 +46,9 @@ useContentHead(page)
               <span v-if="articleDate">{{ articleDate }}</span>
               <NuxtLink
                 to="/posts"
-                class="inline-flex items-center gap-2 transition hover:text-[var(--c-text)]"
+                class="group inline-flex items-center gap-2 transition hover:text-[var(--c-text)]"
               >
-                <span class="i-ph-arrow-left text-base" />
+                <span class="arrow-icon arrow-left i-ph-arrow-left text-base" />
                 <span>Back to journal</span>
               </NuxtLink>
             </div>

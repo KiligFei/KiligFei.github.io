@@ -61,6 +61,13 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .plum-orb-a,
+  .plum-orb-b {
+    animation: none;
+  }
+}
+
 @media (max-width: 767px) {
   .plum-orb-a {
     width: 22rem;
